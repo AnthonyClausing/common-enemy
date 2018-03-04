@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <HelloWorld/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
-
+import axios from 'axios'
+import riot from '../riot_api_key'
+console.log(riot.key)
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  mounted(){
+    axios.get(`https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/himay85?api_key=${riot.key}`)
+    .then(res => {
+      console.log(res.data)
+    })
+    .catch(err => console.log(err))
   }
 }
 </script>
