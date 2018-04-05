@@ -1,42 +1,36 @@
 <template>
   <div class="hello">
     <div align="center">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>First Name___</th>
-            <th>Last Name____</th>
-            <th>Age___</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>hi1</td>
-            <td>hi2</td>
-            <td>hi3</td>
-          </tr>
-        </tbody>
-      </table>
+      <h1>Hello</h1>
+        <ol>
+          <li v-for="champ in Champions" v-bind:key="champ.id">
+            {{champ.image.full}}
+            <img src="champ.image"/>
+          </li>
+        </ol>
       </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import riot from '../../riot_api_key';
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      User : {}, 
+      User : {},
+      Champions: []
     }
   },
   mounted(){
-    axios.get('http://localhost:3000')
-    .then(response => {
-      console.log(response.data)
-      this.User = response.data;
-    })
-    .catch(err => console.log(err))
+    
+    // axios.get(`https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&champListData=image&tags=tags&api_key=${riot.key}`)
+    // .then(res => {
+    //   console.log(res.data)
+    //   this.Champions = res.data.data
+    // })
+    // .catch(err => console.log(err))
   }
 }
 </script>

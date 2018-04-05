@@ -15,11 +15,11 @@ export default {
     HelloWorld
   },
   mounted(){
-    axios.get(`https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/himay85?api_key=${riot.key}`)
-    .then(res => {
-      console.log(res.data)
-    })
-    .catch(err => console.log(err))
+  //  // axios.get(`https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/himay85?api_key=${riot.key}`)
+  //   .then(res => {
+  //     console.log(res.data)
+  //   })
+  //   .catch(err => console.log(err))
   }
 }
 </script>
