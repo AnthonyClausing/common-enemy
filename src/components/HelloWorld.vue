@@ -2,12 +2,12 @@
   <div class="hello">
     <div align="center">
       <h1>Hello</h1>
-        <ol>
-          <li v-for="champ in Champions" v-bind:key="champ.id">
-            {{champ.image.full}}
-            <img src="champ.image"/>
+        <ul>
+         <li v-for="champ in Champions" :key="champ.id">
+           <h5>{{champ.name}}</h5>
+            <img :src="`https://ddragon.leagueoflegends.com/cdn/8.7.1/img/champion/${champ.image.full}`"/>
           </li>
-        </ol>
+        </ul>
       </div>
     </div>
 </template>
@@ -19,18 +19,19 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      User : {},
-      Champions: []
+      User : "",
+      Champions: {}
     }
   },
   mounted(){
     
-    // axios.get(`https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&champListData=image&tags=tags&api_key=${riot.key}`)
-    // .then(res => {
-    //   console.log(res.data)
-    //   this.Champions = res.data.data
-    // })
-    // .catch(err => console.log(err))
+    axios.get('http://localhost:3000/api/champList')
+    .then(res => {
+      //console.log(res)
+      this.Champions = res.data.data;
+      console.log(this.Champions)
+    })
+    .catch(err => console.error(err))
   }
 }
 </script>
