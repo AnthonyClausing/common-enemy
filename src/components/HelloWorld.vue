@@ -14,6 +14,7 @@
 
 <script>
 import axios from 'axios';
+import querystring from 'querystring';
 import riot from '../../riot_api_key';
 export default {
   name: 'HelloWorld',
@@ -24,14 +25,28 @@ export default {
     }
   },
   mounted(){
-    
-    axios.get('http://localhost:3000/api/champList')
-    .then(res => {
-      //console.log(res)
-      this.Champions = res.data.data;
-      console.log(this.Champions)
-    })
-    .catch(err => console.error(err))
+      axios.get('http://localhost:3000/api/summoner?name=AfroSensei')
+      .then( res => {
+        console.log('summoner info',res.data)
+        axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
+        .then(  res => {
+          this.getMatchListInfo(res.data.matches)
+        })
+      })
+      .catch(err => console.error(err))
+  },
+  methods:{
+    getMatchListInfo: function(matchList){
+      let newMatchList = [];
+      matchList.forEach(match => {
+        axios.get(`http://localhost:3000/api/match?gameId=${match.gameId}`)
+        .then( res => {
+          console.log(res.data)
+          newMatchList.push(res.data)
+        })
+      });
+      return newMatchList;
+    }
   }
 }
 </script>

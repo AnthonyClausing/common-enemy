@@ -8,7 +8,7 @@
 import HelloWorld from './components/HelloWorld'
 import axios from 'axios'
 import riot from '../riot_api_key'
-console.log(riot.key)
+//console.log(riot.key)
 export default {
   name: 'App',
   components: {
