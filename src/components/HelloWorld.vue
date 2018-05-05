@@ -27,7 +27,6 @@ export default {
   mounted(){
       axios.get('http://localhost:3000/api/summoner?name=AfroSensei')
       .then( res => {
-        console.log('summoner info',res.data)
         axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
         .then(  res => {
           this.getMatchListInfo(res.data.matches)
