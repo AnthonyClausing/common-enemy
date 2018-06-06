@@ -9,7 +9,7 @@ function riotURLCreator(type, key, params){
     case 'summoner':
       return `https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${params.name}?api_key=${key}`;
     case 'matches':
-      return  `https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/${params.accID}?endIndex=5&api_key=${key}`;
+      return  `https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/${params.accID}?endIndex=10&api_key=${key}`;
     case 'match':
       return `https://na1.api.riotgames.com/lol/match/v3/matches/${params.gameId}?api_key=${key}`
     }

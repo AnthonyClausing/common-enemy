@@ -25,26 +25,49 @@ export default {
     }
   },
   mounted(){
-      axios.get('http://localhost:3000/api/summoner?name=AfroSensei')
+      axios.get('http://localhost:3000/api/summoner?name=himay85')
       .then( res => {
         axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
         .then(  res => {
-          this.getMatchListInfo(res.data.matches)
+          return this.getMatchListInfo(res.data.matches)
+        })
+        .then( newMatchList => {
+          console.log(this.getChampCounts(newMatchList,'Himay85'));
         })
       })
       .catch(err => console.error(err))
   },
   methods:{
-    getMatchListInfo: function(matchList){
+    getMatchListInfo: async function(matchList){
       let newMatchList = [];
-      matchList.forEach(match => {
-        axios.get(`http://localhost:3000/api/match?gameId=${match.gameId}`)
-        .then( res => {
-          console.log(res.data)
-          newMatchList.push(res.data)
-        })
-      });
+      for(let match of matchList) {
+        let whatever =  await axios.get(`http://localhost:3000/api/match?gameId=${match.gameId}`)
+        newMatchList.push(whatever.data)
+      }
       return newMatchList;
+    },
+    //can add another parameter like a bool for checking for bad allies putting it in the if block
+    getChampCounts : function(games,name){
+      let champCountObj = {};
+      //console.log(games)
+      games.forEach( game => {
+      let partId = game.participantIdentities.find( participant => participant.player.summonerName === name).participantId;
+      console.log(partId, 'partId')
+      let enemyTeam;
+      let win = game.participants[partId - 1].stats.win;
+      if(!win){
+        enemyTeam = partId >= 5 ? game.participants.slice(5,10) : game.participants.slice(0,5);
+        console.log(enemyTeam)
+        enemyTeam.forEach( player => {
+         if(!champCountObj[player.championId]){
+            champCountObj[player.championId] = 1;
+         }else{
+            champCountObj[player.championId]++;
+         }
+        })
+      }
+      })
+      return champCountObj;
     }
   }
 }
