@@ -1,52 +1,51 @@
 <template>
-  <div class="hello">
-    <div align="center">
+  <b-container fluid>
       <h1>Hello</h1>
-        <ul>
-           <li v-for="answer in getAnswer" :key="answer.champ.id">
-           <h5>{{answer.champ.name}}</h5>
-            <img :src="`https://ddragon.leagueoflegends.com/cdn/8.18.1/img/champion/${answer.champ.image.full}`"/>
-            <h2>{{answer.count}}</h2>    
-          </li>
-        </ul>
+      <div>
+
       </div>
-    </div>
+      <top-enemies :championCount="getAnswer"></top-enemies>
+  </b-container>
 </template>
 
 <script>
 import axios from 'axios';
 import querystring from 'querystring';
 import riot from '../../riot_api_key';
+import TopEnemies from './TopEnemies';
 import _ from 'lodash';
+import { mapState } from 'vuex'
 export default {
   name: 'HelloWorld',
+  components:{
+    TopEnemies
+  },
   data () {
     return {
       User : "",
-      Champions: {},
       Answer: {}
     }
   },
   computed:{
+    isLoading(){
+      return this.$store.state.loading
+    },
+    championList(){
+      return this.$store.state.champions
+    },
     getAnswer(){
       let newAnswer = []
       for(let id in this.Answer){
-        // console.log(this.Answer[id], 'this.answer at id')
-        //console.log(id,'inside getanswer computed')
         let count = this.Answer[id]
-        let champ = _.find(this.Champions, c => c.key === id)
+        let champ = _.find(this.championList, c => c.key === id)
         newAnswer.push({champ,count})
       }
       return _.orderBy(newAnswer,["count"],["desc"]).slice(0,5)
     }
   },
   mounted(){
+      this.$store.dispatch('getChampions')
       // TODO Turn below axios calls into state actions 
-      axios.get('http://localhost:3000/api/champions')
-        .then(res => {
-          this.Champions = res.data.data
-        })
-        .catch(err => console.log(error,'from HW.vue'))
       axios.get('http://localhost:3000/api/summoner?name=Blitzkreeg8')
         .then( res => {
           axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
@@ -96,8 +95,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1, h2, h3, h4, h5, p {
   font-weight: normal;
+  color:#efbe4c;
 }
 ul {
   list-style-type: none;
