@@ -1,24 +1,27 @@
 <template>
-  <b-container fluid>
+  <div>
       <h1>Hello</h1>
       <div>
-
+        <ul>
+         <li v-for="champ in championList" :key="champ.id"> 
+           <h5>{{champ.name}}</h5> 
+            <img :src="`https://ddragon.leagueoflegends.com/cdn/12.8.1/img/champion/${champ.image.full}`"/> 
+          </li>
+        </ul>
       </div>
-      <top-enemies :championCount="getAnswer"></top-enemies>
-  </b-container>
+      <!-- <top-enemies :championCount="getAnswer"></top-enemies> -->
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
-import querystring from 'querystring';
-import riot from '../../riot_api_key';
-import TopEnemies from './TopEnemies';
+// import TopEnemies from './TopEnemies.vue';
 import _ from 'lodash';
-import { mapState } from 'vuex'
+
 export default {
-  name: 'HelloWorld',
+  name: 'HomeView',
   components:{
-    TopEnemies
+    // TopEnemies
   },
   data () {
     return {
@@ -46,17 +49,17 @@ export default {
   mounted(){
       this.$store.dispatch('getChampions')
       // TODO Turn below axios calls into state actions 
-      axios.get('http://localhost:3000/api/summoner?name=Blitzkreeg8')
-        .then( res => {
-          axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
-        .then(  res => {
-          return this.getMatchListInfo(res.data.matches)
-        })
-        .then( newMatchList => {
-          this.Answer = this.getChampCounts(newMatchList,'Blitzkreeg8')
-        })
-      })
-        .catch(err => console.error(err))
+      // axios.get('http://localhost:3000/api/summoner?name=SaltFreeRobot')
+      //   .then( res => {
+      //     axios.get(`http://localhost:3000/api/matches?accountId=${res.data.accountId}`)
+      //   .then(  res => {
+      //     return this.getMatchListInfo(res.data.matches)
+      //   })
+      //   .then( newMatchList => {
+      //     this.Answer = this.getChampCounts(newMatchList,'SaltFreeRobot')
+      //   })
+      // })
+      //   .catch(err => console.error(err))
   },
   methods:{
     getMatchListInfo: async function(matchList){
@@ -97,13 +100,7 @@ export default {
 <style scoped>
 h1, h2, h3, h4, h5, p {
   font-weight: normal;
-  color: #efbe4c;
-}
-h3 {
-  margin: 40px 0 0;
-}
-h3 {
-  margin: 40px 0 0;
+  color:#efbe4c;
 }
 ul {
   list-style-type: none;

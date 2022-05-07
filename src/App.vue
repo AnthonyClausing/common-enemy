@@ -1,19 +1,15 @@
 <template>
-  <div id="app">
-    <HelloWorld/>
-  </div>
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <home-view/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-import axios from 'axios'
+import HomeView from './components/HomeView.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  },
-  mounted(){
+    HomeView
   }
 }
 </script>
