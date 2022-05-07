@@ -95,9 +95,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+<<<<<<< HEAD
 h1, h2, h3, h4, h5, p {
   font-weight: normal;
   color:#efbe4c;
+=======
+h3 {
+  margin: 40px 0 0;
+>>>>>>> d51105a (init)
 }
 ul {
   list-style-type: none;

@@ -77,6 +77,11 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
+<<<<<<< HEAD
     "not ie <= 8"
+=======
+    "not dead",
+    "not ie 11"
+>>>>>>> d51105a (init)
   ]
 }
