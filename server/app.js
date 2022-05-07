@@ -1,11 +1,12 @@
 const express = require('express');
+const superagent = require('superagent');
 const app  = express();
-const request = require('request');
-const riot = require('../riot_api_key');
+const { RIOT_API_KEY } = require('../riot_api_key.js');
+
 function riotURLCreator(type, key, params){
     switch(type){
     case 'champions':
-      return `http://ddragon.leagueoflegends.com/cdn/8.18.1/data/en_US/champion.json`;
+      return `http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json`;
     case 'summoner':
       return `https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${params.name}?api_key=${key}`;
     case 'matches':
@@ -23,30 +24,47 @@ app.use(function(req, res, next) {
   next();
  });
  
-app.get('/api/champions', function(req,res){ 
- request(riotURLCreator('champions', riot.key), (err,response,body) =>{
-   !err ?  res.send(JSON.parse(response.body)) : console.log(err);
-  })
+app.get('/api/champions', async (req,res) => { 
+  try {
+    const response = await superagent.get(riotURLCreator('champions', RIOT_API_KEY));
+    const { data } = response.body;
+    res.json(data);
+  } catch(err) {
+    console.log(err)
+  }
 })
 
-app.get('/api/summoner',function(req,res){
+app.get('/api/summoner', async (req,res) => {
   let name = req.query.name;
-  request(riotURLCreator('summoner',riot.key,{name}), (err,response,body) => {
-    !err ? res.send(JSON.parse(response.body)) : console.log(err);
-  })
+  try {
+    const response = await superagent.get(riotURLCreator('summoner',RIOT_API_KEY,{name}));
+    const data = await response.json();
+    res.json(data);
+  } catch(err) {
+    console.log(err)
+  }
 })
 
-app.get('/api/matches', function(req, res){
+app.get('/api/matches', async (req, res) => {
   let accID =  req.query.accountId;
-  request(riotURLCreator('matches', riot.key, {accID}), (err,response,body) =>{
-    !err ? res.send(JSON.parse(response.body)) : console.log(err);
-  })
+
+  try {
+    const response = await superagent.get(riotURLCreator('matches', RIOT_API_KEY, {accID}));
+    const data = await response.json();
+    res.json(data);
+  } catch(err) {
+    console.log(err)
+  }
 })
-app.get('/api/match', function(req,res){
+app.get('/api/match', async (req,res) => {
   let gameId = req.query.gameId;
-  request(riotURLCreator('match',riot.key,{gameId}), (err,response,body) =>{
-    !err ? res.send(JSON.parse(response.body)) : console.log(err);
-  })
+  try {
+    const response = await superagent.get(riotURLCreator('match',RIOT_API_KEY,{gameId}));
+    const data = await response.json();
+    res.json(data);
+  } catch(err) {
+    console.log(err)
+  }
 })
 
 

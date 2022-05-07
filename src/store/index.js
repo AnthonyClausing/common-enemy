@@ -1,22 +1,22 @@
-import Vuex from 'vuex'
-import Vue from 'vue'
+import { createStore } from 'vuex'
 import axios from 'axios'
-Vue.use(Vuex)
 
-const store = new Vuex.Store({
+const store = createStore({
 
-  state:{
-    user: '',
-    champions: {},
-    loading: false
+  state(){
+    return {
+      user: '',
+      champions: {},
+      loading: false
+    }
   },
   actions:{
     getChampions({commit}){
       commit('IS_LOADING', true);
       axios.get('http://localhost:3000/api/champions')
       .then(res =>{
-        commit('SET_CHAMPIONS',res.data.data)
-        return res.data.data
+        commit('SET_CHAMPIONS',res.data)
+        return res.data
       })
       .catch(err => console.error(err))
       .finally(()=>{
